@@ -4,7 +4,6 @@ import type { Media, Page, Config, GlobalSetting, Keyword } from '@/payload-type
 import { getServerSideURL } from '@/utilities/getURL'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { getCachedGlobal } from '@/utilities/getGlobals'
-import { Keywords } from '@/collections/keywords'
 
 
 const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null) => {
