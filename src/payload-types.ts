@@ -70,6 +70,7 @@ export interface Config {
     pages: Page;
     blog: Blog;
     keywords: Keyword;
+    headers: Header;
     users: User;
     media: Media;
     forms: Form;
@@ -85,6 +86,7 @@ export interface Config {
     pages: PagesSelect<false> | PagesSelect<true>;
     blog: BlogSelect<false> | BlogSelect<true>;
     keywords: KeywordsSelect<false> | KeywordsSelect<true>;
+    headers: HeadersSelect<false> | HeadersSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
@@ -296,6 +298,12 @@ export interface Page {
       follow: boolean;
     };
     canonical?: string | null;
+  };
+  navigation?: {
+    /**
+     * Select header navigation menu for page
+     */
+    header?: (number | null) | Header;
   };
   publishedAt?: string | null;
   /**
@@ -766,6 +774,115 @@ export interface Keyword {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "headers".
+ */
+export interface Header {
+  id: number;
+  title: string;
+  logo?: (number | null) | Media;
+  /**
+   * Add navigation menu and based on the levels level 1, level 2 and level 3
+   */
+  menu?: {
+    level1?:
+      | {
+          link: {
+            type?: ('reference' | 'custom') | null;
+            newTab?: boolean | null;
+            reference?:
+              | ({
+                  relationTo: 'pages';
+                  value: number | Page;
+                } | null)
+              | ({
+                  relationTo: 'blog';
+                  value: number | Blog;
+                } | null);
+            url?: string | null;
+            label: string;
+          };
+          level2?:
+            | {
+                link: {
+                  type?: ('reference' | 'custom') | null;
+                  newTab?: boolean | null;
+                  reference?:
+                    | ({
+                        relationTo: 'pages';
+                        value: number | Page;
+                      } | null)
+                    | ({
+                        relationTo: 'blog';
+                        value: number | Blog;
+                      } | null);
+                  url?: string | null;
+                  label: string;
+                };
+                level3?:
+                  | {
+                      link: {
+                        type?: ('reference' | 'custom') | null;
+                        newTab?: boolean | null;
+                        reference?:
+                          | ({
+                              relationTo: 'pages';
+                              value: number | Page;
+                            } | null)
+                          | ({
+                              relationTo: 'blog';
+                              value: number | Blog;
+                            } | null);
+                        url?: string | null;
+                        label: string;
+                      };
+                      id?: string | null;
+                    }[]
+                  | null;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Use this to add primary or secondary buttons in the nav menu
+   */
+  buttons?: {
+    links?:
+      | {
+          link: {
+            type?: ('reference' | 'custom') | null;
+            newTab?: boolean | null;
+            reference?:
+              | ({
+                  relationTo: 'pages';
+                  value: number | Page;
+                } | null)
+              | ({
+                  relationTo: 'blog';
+                  value: number | Blog;
+                } | null);
+            url?: string | null;
+            label: string;
+            /**
+             * Choose how the link should be rendered.
+             */
+            appearance?: ('default' | 'outline') | null;
+            /**
+             * Choose size of the link.
+             */
+            size?: ('default' | 'lg') | null;
+          };
+          id?: string | null;
+        }[]
+      | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -943,6 +1060,10 @@ export interface PayloadLockedDocument {
         value: number | Keyword;
       } | null)
     | ({
+        relationTo: 'headers';
+        value: number | Header;
+      } | null)
+    | ({
         relationTo: 'users';
         value: number | User;
       } | null)
@@ -1107,6 +1228,11 @@ export interface PagesSelect<T extends boolean = true> {
             };
         canonical?: T;
       };
+  navigation?:
+    | T
+    | {
+        header?: T;
+      };
   publishedAt?: T;
   segments?:
     | T
@@ -1220,6 +1346,82 @@ export interface BlogSelect<T extends boolean = true> {
  */
 export interface KeywordsSelect<T extends boolean = true> {
   keyword?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "headers_select".
+ */
+export interface HeadersSelect<T extends boolean = true> {
+  title?: T;
+  logo?: T;
+  menu?:
+    | T
+    | {
+        level1?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              level2?:
+                | T
+                | {
+                    link?:
+                      | T
+                      | {
+                          type?: T;
+                          newTab?: T;
+                          reference?: T;
+                          url?: T;
+                          label?: T;
+                        };
+                    level3?:
+                      | T
+                      | {
+                          link?:
+                            | T
+                            | {
+                                type?: T;
+                                newTab?: T;
+                                reference?: T;
+                                url?: T;
+                                label?: T;
+                              };
+                          id?: T;
+                        };
+                    id?: T;
+                  };
+              id?: T;
+            };
+      };
+  buttons?:
+    | T
+    | {
+        links?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                    appearance?: T;
+                    size?: T;
+                  };
+              id?: T;
+            };
+      };
   updatedAt?: T;
   createdAt?: T;
 }
