@@ -28,15 +28,9 @@ export const PayloadRedirects: React.FC<Props> = async ({ disableNotFound, url }
       const id = redirectItem.to?.reference?.value
 
       const document = (await getCachedDocument(collection, id)()) as Page | Blog
-      redirectUrl = `${(redirectItem.to?.reference?.relationTo !== 'pages' && redirectItem.to?.reference?.relationTo !== 'blog') ? `/${redirectItem.to?.reference?.relationTo}` : ''}${
-        document?.fullPath
-      }`
+      redirectUrl = `${!['pages', 'blog'].includes(redirectItem.to?.reference?.relationTo) ? `${redirectItem.to?.reference?.relationTo}` : ''}${document?.fullPath}`
     } else {
-      redirectUrl = `${(redirectItem.to?.reference?.relationTo !== 'pages' && redirectItem.to?.reference?.relationTo !== 'blog') ? `/${redirectItem.to?.reference?.relationTo}` : ''}${
-        typeof redirectItem.to?.reference?.value === 'object'
-          ? redirectItem.to?.reference?.value?.fullPath
-          : ''
-      }`
+      redirectUrl = `${typeof redirectItem.to?.reference?.value === 'object' ? redirectItem.to?.reference?.value?.fullPath : ''}`
     }
 
     if (redirectUrl) redirect(redirectUrl)

@@ -8,6 +8,7 @@ import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { revalidateRedirects } from '@/hooks/revalidateRedirects'
 
+
 const generateTitle: GenerateTitle<Page | Blog> = ({ doc }) => {
   return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
 }
@@ -51,6 +52,9 @@ export const plugins: Plugin[] = [
   redirectsPlugin({
     collections: ['pages', 'blog'],
     overrides: {
+      admin: {
+        defaultColumns: ['from', 'to.type', 'to.reference', 'to.url']
+      },
       // @ts-expect-error - This is a valid override, mapped fields don't resolve to the same type
       fields: ({ defaultFields }) => {
         return defaultFields.map((field) => {

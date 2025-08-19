@@ -9,6 +9,7 @@ import { RenderHero } from '@/heros/RenderHero'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import type { Metadata } from 'next'
 import { generateMeta } from '@/utilities/generateMeta'
+import JsonLd from '@/utilities/jsonLd'
 
 interface PageProps {
   params: Promise<{
@@ -49,23 +50,31 @@ export default async function Page({ params }: PageProps) {
   }
 
   const { hero, layout } = page
+  const schemas = page?.advanced?.schemas ?? []
 
   return (
-    <main className="">
-      {/* Allows redirects for valid pages too */}
-      <PayloadRedirects disableNotFound url={fullPath} />
+    <>
+      {
+        schemas.map((schema, index) => (
+          <JsonLd key={index} schema={schema.schema} name={schema.name} />
+        ))
+      }
+      <main className="">
+        {/* Allows redirects for valid pages too */}
+        <PayloadRedirects disableNotFound url={fullPath} />
 
-      {draft && <LivePreviewListener />}
+        {draft && <LivePreviewListener />}
 
-      <RenderHero {...hero} />
-      <RenderBlocks blocks={layout} />
-    </main>
+        <RenderHero {...hero} />
+        <RenderBlocks blocks={layout} />
+      </main>
+    </>
   )
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const segments = (await params).segments || []
-  const fullPath = segments.length > 0 ? `/${segments.join("/")}` : "/home"
+  const fullPath = segments.length > 0 ? `/${segments.join("/")}` : "/"
   const page = await queryPageByFullPath({ path: fullPath })
   return generateMeta({ doc: page })
 }

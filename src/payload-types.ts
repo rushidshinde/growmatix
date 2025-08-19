@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     pages: Page;
     blog: Blog;
+    keywords: Keyword;
     users: User;
     media: Media;
     forms: Form;
@@ -83,6 +84,7 @@ export interface Config {
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
     blog: BlogSelect<false> | BlogSelect<true>;
+    keywords: KeywordsSelect<false> | KeywordsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
@@ -96,8 +98,12 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'global-settings': GlobalSetting;
+  };
+  globalsSelect: {
+    'global-settings': GlobalSettingsSelect<false> | GlobalSettingsSelect<true>;
+  };
   locale: null;
   user: User & {
     collection: 'users';
@@ -255,11 +261,41 @@ export interface Page {
   layout: (CallToActionBlock | ContentBlock | MediaBlock | FormBlock)[];
   meta?: {
     title?: string | null;
+    description?: string | null;
     /**
      * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
      */
     image?: (number | null) | Media;
-    description?: string | null;
+  };
+  advanced: {
+    /**
+     * Select relevant keywords for SEO. These will be used in meta tags and may affect search visibility.
+     */
+    keywords?: (number | Keyword)[] | null;
+    /**
+     * Add structured data markup for search engines. Each schema should be valid JSON-LD.
+     */
+    schemas?:
+      | {
+          /**
+           * Descriptive name for this schema (e.g., 'Organization', 'Article', 'Product')
+           */
+          name: string;
+          /**
+           * Valid JSON-LD structured data markup
+           */
+          schema: string;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Controls how search engines crawl and index this page.
+     */
+    robots: {
+      index: boolean;
+      follow: boolean;
+    };
+    canonical?: string | null;
   };
   publishedAt?: string | null;
   /**
@@ -720,6 +756,16 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "keywords".
+ */
+export interface Keyword {
+  id: number;
+  keyword: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -893,6 +939,10 @@ export interface PayloadLockedDocument {
         value: number | Blog;
       } | null)
     | ({
+        relationTo: 'keywords';
+        value: number | Keyword;
+      } | null)
+    | ({
         relationTo: 'users';
         value: number | User;
       } | null)
@@ -1035,8 +1085,27 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         title?: T;
-        image?: T;
         description?: T;
+        image?: T;
+      };
+  advanced?:
+    | T
+    | {
+        keywords?: T;
+        schemas?:
+          | T
+          | {
+              name?: T;
+              schema?: T;
+              id?: T;
+            };
+        robots?:
+          | T
+          | {
+              index?: T;
+              follow?: T;
+            };
+        canonical?: T;
       };
   publishedAt?: T;
   segments?:
@@ -1142,6 +1211,15 @@ export interface BlogSelect<T extends boolean = true> {
   slug?: T;
   slugLock?: T;
   fullPath?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "keywords_select".
+ */
+export interface KeywordsSelect<T extends boolean = true> {
+  keyword?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1487,6 +1565,153 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "global-settings".
+ */
+export interface GlobalSetting {
+  id: number;
+  general?: {
+    name?: string | null;
+    description?: string | null;
+    /**
+     * Select a 48 x 48 pixel ICO to display in browser tabs.
+     */
+    favicon?: (number | null) | Media;
+    /**
+     * Select a 16 x 16 pixel ICO, SVG, WEBP, AVIF, PNG, JPG or JPEG
+     */
+    icon16?: (number | null) | Media;
+    /**
+     * Select a 32 x 32 pixel ICO, SVG, WEBP, AVIF, PNG, JPG or JPEG
+     */
+    icon32?: (number | null) | Media;
+    /**
+     * Select a 96 x 96 pixel ICO, SVG, WEBP, AVIF, PNG, JPG or JPEG
+     */
+    icon96?: (number | null) | Media;
+    /**
+     * Select a 180 x 180 pixel WEBP, AVIF, PNG, JPG or JPEG
+     */
+    appleTouchIcon180?: (number | null) | Media;
+  };
+  seo: {
+    /**
+     * Controls how search engines crawl and index this site.
+     */
+    robots: {
+      index: boolean;
+      follow: boolean;
+      nocache: boolean;
+    };
+    /**
+     * Controls how Google's search crawler (Googlebot) crawl and index this site.
+     */
+    googleBot: {
+      index: boolean;
+      follow: boolean;
+      noImageIndex: boolean;
+    };
+    /**
+     * Add structured data markup for search engines. Each schema should be valid JSON-LD. These schemas will be added on entire site
+     */
+    schemas?:
+      | {
+          /**
+           * Descriptive name for this schema (e.g., 'Organization', 'Article', 'Product')
+           */
+          name: string;
+          /**
+           * Valid JSON-LD structured data markup
+           */
+          schema: string;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Verify your site with Google to get access to your site’s Google search data, and submit your sitemap for indexing.
+     */
+    googleSiteVerification?: string | null;
+    /**
+     * Enter Facebook verification code to validate ownership of your domain for Meta services.
+     */
+    facebookSiteVerification?: string | null;
+  };
+  integrations?: {
+    /**
+     * Enter your Google Analytics Measurement ID to enable website traffic tracking via Google Analytics.
+     */
+    googleAnalyticsId?: string | null;
+    /**
+     * Enter your Google Tag Manager (GTM) container ID.
+     */
+    googleTagManagerId?: string | null;
+  };
+  /**
+   * Select theme for project. Default is System
+   */
+  theme: 'system' | 'light' | 'dark';
+  language?: ('en-IN' | 'en-GB' | 'en-US') | null;
+  canonical?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "global-settings_select".
+ */
+export interface GlobalSettingsSelect<T extends boolean = true> {
+  general?:
+    | T
+    | {
+        name?: T;
+        description?: T;
+        favicon?: T;
+        icon16?: T;
+        icon32?: T;
+        icon96?: T;
+        appleTouchIcon180?: T;
+      };
+  seo?:
+    | T
+    | {
+        robots?:
+          | T
+          | {
+              index?: T;
+              follow?: T;
+              nocache?: T;
+            };
+        googleBot?:
+          | T
+          | {
+              index?: T;
+              follow?: T;
+              noImageIndex?: T;
+            };
+        schemas?:
+          | T
+          | {
+              name?: T;
+              schema?: T;
+              id?: T;
+            };
+        googleSiteVerification?: T;
+        facebookSiteVerification?: T;
+      };
+  integrations?:
+    | T
+    | {
+        googleAnalyticsId?: T;
+        googleTagManagerId?: T;
+      };
+  theme?: T;
+  language?: T;
+  canonical?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
