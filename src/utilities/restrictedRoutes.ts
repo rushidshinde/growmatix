@@ -1,22 +1,28 @@
-export const restrictedRoutes = ["/blog", "/blog/*"]
+export const restrictedRoutes = ["/blog/*", "/case-study/*"]
 
 export const isRouteRestricted = (path: string): boolean => {
   if (!path) {
     return true
   }
 
-  // Ensure path starts with "/" for consistent comparison
+  // Ensure path starts with "/"
   const normalizedPath = path.startsWith("/") ? path : `/${path}`
 
   return restrictedRoutes.some((restrictedRoute) => {
-    // Handle wildcard patterns (e.g., "/blog/*")
+    // Handle wildcard routes like "/blog/*"
     if (restrictedRoute.endsWith("/*")) {
-      const basePath = restrictedRoute.slice(0, -2) // Remove "/*"
-      // Check if path matches base path exactly or is a sub-path
-      return normalizedPath === basePath || normalizedPath.startsWith(basePath + "/")
+      const basePath = restrictedRoute.slice(0, -2) // "/blog"
+
+      // Allow exact match with basePath (e.g., "/blog" is allowed)
+      if (normalizedPath === basePath) {
+        return false
+      }
+
+      // Restrict if it's a subpath (e.g., "/blog/something")
+      return normalizedPath.startsWith(basePath + "/")
     }
 
-    // Handle exact matches (e.g., "/blog")
+    // Exact match
     return normalizedPath === restrictedRoute
   })
 }

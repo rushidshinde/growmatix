@@ -2,9 +2,9 @@ import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'paylo
 
 import { revalidatePath, revalidateTag } from 'next/cache'
 
-import type { Page } from '@/payload-types'
+import type { Blog } from '@/payload-types'
 
-export const revalidatePage: CollectionAfterChangeHook<Page> = ({
+export const revalidateBlog: CollectionAfterChangeHook<Blog> = ({
   doc,
   previousDoc,
   req: { payload, context },
@@ -32,7 +32,10 @@ export const revalidatePage: CollectionAfterChangeHook<Page> = ({
   return doc
 }
 
-export const revalidatePageDelete: CollectionAfterDeleteHook<Page> = ({ doc, req: { context } }) => {
+export const revalidateBlogDelete: CollectionAfterDeleteHook<Blog> = ({
+  doc,
+  req: { context },
+}) => {
   if (!context.disableRevalidate) {
     const path = doc?.fullPath
     revalidatePath(path)

@@ -10,7 +10,7 @@ import {
 } from '@payloadcms/plugin-seo/fields'
 import { slugField } from '@/fields/slug'
 import { generatePreviewPath } from '@/utilities/generatePreviewPath'
-import { revalidateDelete, revalidatePage } from '@/collections/Pages/hooks/revalidatePage'
+import { revalidatePageDelete, revalidatePage } from '@/collections/Pages/hooks/revalidatePage'
 import { populatePublishedAt } from '@/hooks/populatePublishedAt'
 import { hero } from '@/heros/config'
 import { CallToAction } from '@/blocks/CallToAction/config'
@@ -34,9 +34,6 @@ export const Pages: CollectionConfig<'pages'> = {
     title: true,
     slug: true,
     fullPath: true,
-    advanced: {
-      keywords: true,
-    },
   },
   admin: {
     defaultColumns: ['title', '_status', 'fullPath', 'homepage', 'updatedAt'],
@@ -341,10 +338,10 @@ export const Pages: CollectionConfig<'pages'> = {
     },
   ],
   hooks: {
-    afterChange: [revalidatePage],
     beforeChange: [populatePublishedAt, setHomepage],
     beforeValidate: [segmentValidate],
-    afterDelete: [revalidateDelete],
+    afterChange: [revalidatePage],
+    afterDelete: [revalidatePageDelete],
   },
   versions: {
     drafts: {

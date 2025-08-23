@@ -345,6 +345,43 @@ export interface Blog {
     image?: (number | null) | Media;
     description?: string | null;
   };
+  advanced: {
+    /**
+     * Select relevant keywords for SEO. These will be used in meta tags and may affect search visibility.
+     */
+    keywords?: (number | Keyword)[] | null;
+    /**
+     * Add structured data markup for search engines. Each schema should be valid JSON-LD.
+     */
+    schemas?:
+      | {
+          /**
+           * Descriptive name for this schema (e.g., 'Organization', 'Article', 'Product')
+           */
+          name: string;
+          /**
+           * Valid JSON-LD structured data markup
+           */
+          schema: string;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * Controls how search engines crawl and index this page.
+     */
+    robots: {
+      index: boolean;
+      follow: boolean;
+    };
+    canonical?: string | null;
+  };
+  navigation?: {
+    /**
+     * Select header navigation menu for page
+     */
+    header?: (number | null) | Header;
+  };
+  publishedAt?: string | null;
   slug: string;
   slugLock?: boolean | null;
   /**
@@ -353,6 +390,7 @@ export interface Blog {
   fullPath: string;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -445,6 +483,125 @@ export interface Media {
       filename?: string | null;
     };
   };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "keywords".
+ */
+export interface Keyword {
+  id: number;
+  keyword: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "headers".
+ */
+export interface Header {
+  id: number;
+  title: string;
+  logo?: (number | null) | Media;
+  /**
+   * Add navigation menu and based on the levels level 1, level 2 and level 3
+   */
+  menu?: {
+    level1?:
+      | {
+          link: {
+            type?: ('reference' | 'custom') | null;
+            newTab?: boolean | null;
+            reference?:
+              | ({
+                  relationTo: 'pages';
+                  value: number | Page;
+                } | null)
+              | ({
+                  relationTo: 'blog';
+                  value: number | Blog;
+                } | null);
+            url?: string | null;
+            label: string;
+          };
+          level2?:
+            | {
+                link: {
+                  type?: ('reference' | 'custom') | null;
+                  newTab?: boolean | null;
+                  reference?:
+                    | ({
+                        relationTo: 'pages';
+                        value: number | Page;
+                      } | null)
+                    | ({
+                        relationTo: 'blog';
+                        value: number | Blog;
+                      } | null);
+                  url?: string | null;
+                  label: string;
+                };
+                level3?:
+                  | {
+                      link: {
+                        type?: ('reference' | 'custom') | null;
+                        newTab?: boolean | null;
+                        reference?:
+                          | ({
+                              relationTo: 'pages';
+                              value: number | Page;
+                            } | null)
+                          | ({
+                              relationTo: 'blog';
+                              value: number | Blog;
+                            } | null);
+                        url?: string | null;
+                        label: string;
+                      };
+                      id?: string | null;
+                    }[]
+                  | null;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  /**
+   * Use this to add primary or secondary buttons in the nav menu
+   */
+  buttons?: {
+    links?:
+      | {
+          link: {
+            type?: ('reference' | 'custom') | null;
+            newTab?: boolean | null;
+            reference?:
+              | ({
+                  relationTo: 'pages';
+                  value: number | Page;
+                } | null)
+              | ({
+                  relationTo: 'blog';
+                  value: number | Blog;
+                } | null);
+            url?: string | null;
+            label: string;
+            /**
+             * Choose how the link should be rendered.
+             */
+            appearance?: ('default' | 'outline') | null;
+            /**
+             * Choose size of the link.
+             */
+            size?: ('default' | 'lg') | null;
+          };
+          id?: string | null;
+        }[]
+      | null;
+  };
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -759,125 +916,6 @@ export interface Form {
         id?: string | null;
       }[]
     | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "keywords".
- */
-export interface Keyword {
-  id: number;
-  keyword: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "headers".
- */
-export interface Header {
-  id: number;
-  title: string;
-  logo?: (number | null) | Media;
-  /**
-   * Add navigation menu and based on the levels level 1, level 2 and level 3
-   */
-  menu?: {
-    level1?:
-      | {
-          link: {
-            type?: ('reference' | 'custom') | null;
-            newTab?: boolean | null;
-            reference?:
-              | ({
-                  relationTo: 'pages';
-                  value: number | Page;
-                } | null)
-              | ({
-                  relationTo: 'blog';
-                  value: number | Blog;
-                } | null);
-            url?: string | null;
-            label: string;
-          };
-          level2?:
-            | {
-                link: {
-                  type?: ('reference' | 'custom') | null;
-                  newTab?: boolean | null;
-                  reference?:
-                    | ({
-                        relationTo: 'pages';
-                        value: number | Page;
-                      } | null)
-                    | ({
-                        relationTo: 'blog';
-                        value: number | Blog;
-                      } | null);
-                  url?: string | null;
-                  label: string;
-                };
-                level3?:
-                  | {
-                      link: {
-                        type?: ('reference' | 'custom') | null;
-                        newTab?: boolean | null;
-                        reference?:
-                          | ({
-                              relationTo: 'pages';
-                              value: number | Page;
-                            } | null)
-                          | ({
-                              relationTo: 'blog';
-                              value: number | Blog;
-                            } | null);
-                        url?: string | null;
-                        label: string;
-                      };
-                      id?: string | null;
-                    }[]
-                  | null;
-                id?: string | null;
-              }[]
-            | null;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  /**
-   * Use this to add primary or secondary buttons in the nav menu
-   */
-  buttons?: {
-    links?:
-      | {
-          link: {
-            type?: ('reference' | 'custom') | null;
-            newTab?: boolean | null;
-            reference?:
-              | ({
-                  relationTo: 'pages';
-                  value: number | Page;
-                } | null)
-              | ({
-                  relationTo: 'blog';
-                  value: number | Blog;
-                } | null);
-            url?: string | null;
-            label: string;
-            /**
-             * Choose how the link should be rendered.
-             */
-            appearance?: ('default' | 'outline') | null;
-            /**
-             * Choose size of the link.
-             */
-            size?: ('default' | 'lg') | null;
-          };
-          id?: string | null;
-        }[]
-      | null;
-  };
   updatedAt: string;
   createdAt: string;
 }
@@ -1334,11 +1372,37 @@ export interface BlogSelect<T extends boolean = true> {
         image?: T;
         description?: T;
       };
+  advanced?:
+    | T
+    | {
+        keywords?: T;
+        schemas?:
+          | T
+          | {
+              name?: T;
+              schema?: T;
+              id?: T;
+            };
+        robots?:
+          | T
+          | {
+              index?: T;
+              follow?: T;
+            };
+        canonical?: T;
+      };
+  navigation?:
+    | T
+    | {
+        header?: T;
+      };
+  publishedAt?: T;
   slug?: T;
   slugLock?: T;
   fullPath?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1850,6 +1914,70 @@ export interface GlobalSetting {
      */
     googleTagManagerId?: string | null;
   };
+  robotsFile?: {
+    rules?:
+      | {
+          /**
+           * Select a bot
+           */
+          userAgent:
+            | '*'
+            | 'Googlebot'
+            | 'Googlebot-Image'
+            | 'Googlebot-News'
+            | 'Googlebot-Video'
+            | 'AdsBot-Google'
+            | 'Mediapartners-Google'
+            | 'Storebot-Google'
+            | 'Google-Extended'
+            | 'bingbot'
+            | 'msnbot'
+            | 'Slurp'
+            | 'Yandex'
+            | 'Baiduspider'
+            | 'Baiduspider-Image'
+            | 'DuckDuckBot'
+            | 'facebookexternalhit'
+            | 'Twitterbot'
+            | 'ClaudeBot'
+            | 'GPTBot'
+            | 'SemrushBot'
+            | 'AhrefsBot'
+            | 'MJ12bot';
+          allow?:
+            | {
+                /**
+                 * Add paths eg. '/', '/seo/'
+                 */
+                value: string;
+                id?: string | null;
+              }[]
+            | null;
+          disallow?:
+            | {
+                /**
+                 * Add paths eg. '/admin/', '/private/'
+                 */
+                value: string;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  sitemap: {
+    /**
+     * We automatically generate a sitemap for you
+     */
+    autoGenerateSitemap: boolean;
+    customSitemap?: {
+      /**
+       * Add valid xml data to generate Sitemap.xml file
+       */
+      xmlData: string;
+    };
+  };
   /**
    * Select theme for project. Default is System
    */
@@ -1908,6 +2036,38 @@ export interface GlobalSettingsSelect<T extends boolean = true> {
         googleAnalyticsId?: T;
         googleTagManagerId?: T;
       };
+  robotsFile?:
+    | T
+    | {
+        rules?:
+          | T
+          | {
+              userAgent?: T;
+              allow?:
+                | T
+                | {
+                    value?: T;
+                    id?: T;
+                  };
+              disallow?:
+                | T
+                | {
+                    value?: T;
+                    id?: T;
+                  };
+              id?: T;
+            };
+      };
+  sitemap?:
+    | T
+    | {
+        autoGenerateSitemap?: T;
+        customSitemap?:
+          | T
+          | {
+              xmlData?: T;
+            };
+      };
   theme?: T;
   language?: T;
   canonical?: T;
@@ -1923,10 +2083,15 @@ export interface TaskSchedulePublish {
   input: {
     type?: ('publish' | 'unpublish') | null;
     locale?: string | null;
-    doc?: {
-      relationTo: 'pages';
-      value: number | Page;
-    } | null;
+    doc?:
+      | ({
+          relationTo: 'pages';
+          value: number | Page;
+        } | null)
+      | ({
+          relationTo: 'blog';
+          value: number | Blog;
+        } | null);
     global?: string | null;
     user?: (number | null) | User;
   };

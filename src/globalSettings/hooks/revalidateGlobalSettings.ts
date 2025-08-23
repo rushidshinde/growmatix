@@ -7,6 +7,7 @@ export const revalidateGlobalSettings: GlobalAfterChangeHook = ({ doc, req: { pa
     payload.logger.info(`Revalidating global settings`)
 
     revalidateTag('global_global-settings')
+    revalidateTag('sitemap')
   }
   return doc
 }

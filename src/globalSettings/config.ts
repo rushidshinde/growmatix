@@ -1,6 +1,8 @@
 import { CodeFieldValidation, GlobalConfig, TextFieldSingleValidation } from 'payload'
 import { anyone } from '@/access/anyone'
 import { revalidateGlobalSettings } from '@/globalSettings/hooks/revalidateGlobalSettings'
+import { validateSitemapXML } from '@/globalSettings/hooks/validateSitemapXML'
+
 
 export const GlobalSettings: GlobalConfig = {
   slug: 'global-settings',
@@ -336,6 +338,142 @@ export const GlobalSettings: GlobalConfig = {
                 }
               }) as TextFieldSingleValidation,
             },
+          ],
+        },
+        {
+          name: 'robotsFile',
+          label: 'Robots.txt',
+          fields: [
+            {
+              name: 'rules',
+              type: 'array',
+              fields: [
+                {
+                  name: 'userAgent',
+                  type: 'select',
+                  label: 'userAgent',
+                  required: true,
+                  defaultValue: '*',
+                  admin: {
+                    description: 'Select a bot',
+                  },
+                  options: [
+                    { label: 'All bots (*)', value: '*' },
+                    { label: 'Googlebot', value: 'Googlebot' },
+                    { label: 'Googlebot-Image', value: 'Googlebot-Image' },
+                    { label: 'Googlebot-News', value: 'Googlebot-News' },
+                    { label: 'Googlebot-Video', value: 'Googlebot-Video' },
+                    { label: 'AdsBot-Google', value: 'AdsBot-Google' },
+                    { label: 'Mediapartners-Google', value: 'Mediapartners-Google' },
+                    { label: 'Storebot-Google', value: 'Storebot-Google' },
+                    { label: 'Google-Extended', value: 'Google-Extended' },
+                    { label: 'Bingbot', value: 'bingbot' },
+                    { label: 'MSNBot', value: 'msnbot' },
+                    { label: 'Yahoo Slurp', value: 'Slurp' },
+                    { label: 'Yandex', value: 'Yandex' },
+                    { label: 'Baiduspider', value: 'Baiduspider' },
+                    { label: 'Baiduspider-Image', value: 'Baiduspider-Image' },
+                    { label: 'DuckDuckBot', value: 'DuckDuckBot' },
+                    { label: 'Facebook External Hit', value: 'facebookexternalhit' },
+                    { label: 'Twitterbot', value: 'Twitterbot' },
+                    { label: 'ClaudeBot', value: 'ClaudeBot' },
+                    { label: 'GPTBot', value: 'GPTBot' },
+                    { label: 'SemrushBot', value: 'SemrushBot' },
+                    { label: 'AhrefsBot', value: 'AhrefsBot' },
+                    { label: 'MJ12bot', value: 'MJ12bot' },
+                  ],
+                },
+                {
+                  name: 'allow',
+                  type: 'array',
+                  fields: [
+                    {
+                      name: 'value',
+                      type: 'text',
+                      admin: {
+                        description: "Add paths eg. '/', '/seo/'"
+                      },
+                      required: true,
+                      hooks: {
+                        beforeChange: [
+                          ({ value }) => {
+                            if (typeof value !== 'string') return value
+                            const trimmed = value.trim()
+                            // Return single slash if the path is root
+                            if (trimmed === '/') return '/'
+                            // Add leading and trailing slashes if not present
+                            const withLeading = trimmed.startsWith('/') ? trimmed : '/' + trimmed
+                            return withLeading.endsWith('/') ? withLeading : withLeading + '/'
+                          },
+                        ]
+                      }
+                    },
+                  ],
+                },
+                {
+                  name: 'disallow',
+                  type: 'array',
+                  fields: [
+                    {
+                      name: 'value',
+                      type: 'text',
+                      admin: {
+                        description: "Add paths eg. '/admin/', '/private/'"
+                      },
+                      required: true,
+                      hooks: {
+                        beforeChange: [
+                          ({ value }) => {
+                            if (typeof value !== 'string') return value
+                            const trimmed = value.trim()
+                            // Return single slash if the path is root
+                            if (trimmed === '/') return '/'
+                            // Add leading and trailing slashes if not present
+                            const withLeading = trimmed.startsWith('/') ? trimmed : '/' + trimmed
+                            return withLeading.endsWith('/') ? withLeading : withLeading + '/'
+                          },
+                        ]
+                      }
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          name: 'sitemap',
+          label: 'Sitemap.xml',
+          fields: [
+            {
+              name: 'autoGenerateSitemap',
+              type: 'checkbox',
+              defaultValue: true,
+              required: true,
+              admin: {
+                description: "We automatically generate a sitemap for you",
+              },
+            },
+            {
+              name: 'customSitemap',
+              type: 'group',
+              admin: {
+                condition: (_, { autoGenerateSitemap } = {}) => !autoGenerateSitemap,
+              },
+              fields: [
+                {
+                  name: 'xmlData',
+                  label: 'Sitemap.xml',
+                  type: 'code',
+                  required: true,
+                  admin: {
+                    language: 'xml',
+                    description: "Add valid xml data to generate Sitemap.xml file",
+                  },
+                  validate: (validateSitemapXML) as CodeFieldValidation,
+                },
+              ],
+            }
           ],
         },
       ],
