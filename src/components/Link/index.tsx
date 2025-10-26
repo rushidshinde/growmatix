@@ -5,7 +5,7 @@ import React from 'react'
 import type { Page, Blog } from '@/payload-types'
 import { cn } from '@/lib/utils'
 
-type CMSLinkType = {
+export type CMSLinkType = {
   appearance?: 'inline' | ButtonProps['variant']
   children?: React.ReactNode
   className?: string
