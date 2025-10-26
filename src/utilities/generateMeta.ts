@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import type { Media, Page, Config, GlobalSetting, Keyword } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
-import { getCachedGlobal } from '@/utilities/getGlobals'
+import { getCachedGlobalSettings } from '@/utilities/getGlobals'
 
 
 const getImageURL = (image?: Media | Config['db']['defaultIDType'] | null) => {
@@ -38,7 +38,7 @@ export const generateMeta = async (args: {
 }): Promise<Metadata> => {
   const { doc } = args
 
-  const siteSetting:GlobalSetting = await getCachedGlobal('global-settings', 1)();
+  const siteSetting:GlobalSetting = await getCachedGlobalSettings();
 
   const ogImage = getImageURL(doc?.meta?.image)
 

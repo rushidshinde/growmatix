@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next'
 import { GlobalSetting } from '@/payload-types'
-import { getCachedGlobal } from '@/utilities/getGlobals'
+import { getCachedGlobalSettings } from '@/utilities/getGlobals'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { getServerSideURL } from '@/utilities/getURL'
@@ -9,7 +9,7 @@ import { unstable_cache } from 'next/cache'
 import { XMLParser, XMLValidator } from 'fast-xml-parser'
 
 const generateSitemap = async (): Promise<MetadataRoute.Sitemap> => {
-  const siteSetting: GlobalSetting = await getCachedGlobal('global-settings', 1)();
+  const siteSetting: GlobalSetting = await getCachedGlobalSettings();
   const serverURL = getServerSideURL();
   const payload = await getPayload({ config: configPromise })
   const autoGenerateSitemap = siteSetting?.sitemap?.autoGenerateSitemap

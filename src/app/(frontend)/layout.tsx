@@ -3,7 +3,7 @@ import { Metadata } from 'next'
 import './styles.css'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Montserrat, Space_Grotesk } from 'next/font/google'
-import { getCachedGlobal } from '@/utilities/getGlobals'
+import { getCachedGlobalSettings } from '@/utilities/getGlobals'
 import { GlobalSetting } from '@/payload-types'
 import { getServerSideURL } from '@/utilities/getURL'
 import JsonLd from '@/utilities/jsonLd'
@@ -25,7 +25,7 @@ const spaceGrotesk = Space_Grotesk({
   variable: '--font-space-grotesk'
 })
 export async function generateMetadata(): Promise<Metadata> {
-  const siteSetting: GlobalSetting = await getCachedGlobal('global-settings', 1)()
+  const siteSetting: GlobalSetting = await getCachedGlobalSettings();
   const serverURL = getServerSideURL();
   const favicon = typeof siteSetting?.general?.favicon === 'object' && siteSetting?.general?.favicon?.url ? siteSetting?.general?.favicon?.url : '/favicon.ico';
   const icon16Url = typeof siteSetting?.general?.icon16 === 'object' && siteSetting?.general?.icon16?.url ? siteSetting?.general?.icon16?.url : '';
@@ -99,7 +99,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function RootLayout(props: { children: React.ReactNode }) {
   const { children } = props
-  const siteSetting: GlobalSetting = await getCachedGlobal('global-settings', 1)()
+  const siteSetting: GlobalSetting = await getCachedGlobalSettings();
   const schemas = siteSetting?.seo?.schemas ?? [];
 
   return (

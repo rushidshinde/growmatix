@@ -1,11 +1,11 @@
 import { MetadataRoute } from 'next'
 import { GlobalSetting } from '@/payload-types'
-import { getCachedGlobal } from '@/utilities/getGlobals'
+import { getCachedGlobalSettings } from '@/utilities/getGlobals'
 import { getServerSideURL } from '@/utilities/getURL'
 
 export default async function robots(): Promise<MetadataRoute.Robots> {
 
-  const siteSetting: GlobalSetting = await getCachedGlobal('global-settings', 1)()
+  const siteSetting: GlobalSetting = await getCachedGlobalSettings()
   const serverURL = getServerSideURL();
 
   const rules = siteSetting?.robotsFile?.rules ?? []
