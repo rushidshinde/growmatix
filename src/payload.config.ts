@@ -13,7 +13,6 @@ import { Blogs } from '@/collections/Blogs'
 import { plugins } from '@/plugins'
 import { GlobalSettings } from '@/globalSettings/config'
 import { Keywords } from '@/collections/keywords'
-import { Headers } from '@/collections/Headers'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -25,7 +24,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Pages, Blogs, Keywords, Headers, Users, Media],
+  collections: [Pages, Blogs, Keywords, Users, Media],
   globals: [GlobalSettings,],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

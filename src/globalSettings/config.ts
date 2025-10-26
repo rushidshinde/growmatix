@@ -505,6 +505,7 @@ export const GlobalSettings: GlobalConfig = {
     {
       name: 'language',
       type: 'select',
+      defaultValue: 'en-US',
       admin: {
         position: 'sidebar',
       },

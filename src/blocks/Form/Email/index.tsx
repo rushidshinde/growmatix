@@ -15,7 +15,7 @@ export const Email: React.FC<
   }
 > = ({ name, defaultValue, errors, label, register, required, width }) => {
   return (
-    <Width width={width}>
+    <Width width={width} className="mb-6 last:mb-0 w-full md:!max-w-full">
       <Label htmlFor={name}>
         {label}
 
@@ -28,7 +28,7 @@ export const Email: React.FC<
       <Input
         defaultValue={defaultValue}
         id={name}
-        type="text"
+        type="email"
         {...register(name, { pattern: /^\S[^\s@]*@\S+$/, required })}
       />
 

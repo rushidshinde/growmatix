@@ -54,11 +54,10 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <>
-      {
-        schemas.map((schema, index) => (
-          <JsonLd key={index} schema={schema.schema} name={schema.name} />
-        ))
-      }
+      {schemas.map((schema, index) => (
+        <JsonLd key={index} schema={schema.schema} name={schema.name} />
+      ))}
+      {/*{navigation?.header && <RenderHeaderNav header={navigation?.header} />}*/}
       <main className="">
         {/* Allows redirects for valid pages too */}
         <PayloadRedirects disableNotFound url={fullPath} />

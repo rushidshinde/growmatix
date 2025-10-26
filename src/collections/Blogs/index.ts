@@ -177,21 +177,6 @@ export const Blogs: CollectionConfig<'blog'> = {
             },
           ],
         },
-        {
-          name: 'navigation',
-          fields: [
-            {
-              name: 'header',
-              type: 'relationship',
-              relationTo: 'headers',
-              hasMany: false,
-              label: 'Choose header',
-              admin: {
-                description: 'Select header navigation menu for page',
-              },
-            },
-          ],
-        },
       ],
     },
     {

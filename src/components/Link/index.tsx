@@ -35,7 +35,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
 
   const href =
     type === 'reference' && typeof reference?.value === 'object' && reference.value.fullPath
-      ? `${!['pages', 'blog'].includes(reference?.relationTo) ? `/${reference?.relationTo}` : ''}/${
+      ? `${!['pages', 'blog'].includes(reference?.relationTo) ? `/${reference?.relationTo}` : ''}${
           reference.value.fullPath
         }`
       : url

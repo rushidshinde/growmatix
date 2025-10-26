@@ -69,6 +69,7 @@ export const link: LinkType = ({ appearances, sizes, disableLabel = false, overr
     admin: {
       hideGutter: true,
     },
+
     fields: [
       {
         type: 'row',

@@ -2,7 +2,7 @@
 import type { FormFieldBlock, Form as FormType } from '@payloadcms/plugin-form-builder/types'
 
 import { useRouter } from 'next/navigation'
-import React, { useCallback, useState } from 'react'
+import React, { Fragment, useCallback, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
@@ -17,6 +17,7 @@ export type FormBlockType = {
   enableIntro: boolean
   form: FormType
   introContent?: SerializedEditorState
+  submitButtonAlign: 'default' | 'left' | 'center' | 'right',
 }
 
 export const FormBlock: React.FC<
@@ -29,6 +30,7 @@ export const FormBlock: React.FC<
     form: formFromProps,
     form: { id: formID, confirmationMessage, confirmationType, redirect, submitButtonLabel } = {},
     introContent,
+    submitButtonAlign,
   } = props
 
   const formMethods = useForm({
@@ -114,7 +116,7 @@ export const FormBlock: React.FC<
   )
 
   return (
-    <div className="container lg:max-w-[48rem]">
+    <div className="container">
       {enableIntro && introContent && !hasSubmitted && (
         <RichText className="mb-8 lg:mb-12" data={introContent} enableGutter={false} />
       )}
@@ -126,8 +128,8 @@ export const FormBlock: React.FC<
           {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
           {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
           {!hasSubmitted && (
-            <form id={formID} onSubmit={handleSubmit(onSubmit)}>
-              <div className="mb-4 last:mb-0">
+            <form id={formID} onSubmit={handleSubmit(onSubmit)} className={`w-full flex flex-col ${submitButtonAlign === 'left' ? 'items-start' : submitButtonAlign === 'center' ? 'items-center' : submitButtonAlign === 'right' ? 'items-end' : '' }`}>
+              <div className="mb-6 last:mb-0 w-full flex flex-wrap justify-between gap-x-[2%]">
                 {formFromProps &&
                   formFromProps.fields &&
                   formFromProps.fields?.map((field, index) => {
@@ -135,7 +137,7 @@ export const FormBlock: React.FC<
                     const Field: React.FC<any> = fields?.[field.blockType as keyof typeof fields]
                     if (Field) {
                       return (
-                        <div className="mb-6 last:mb-0" key={index}>
+                        <Fragment key={index}>
                           <Field
                             form={formFromProps}
                             {...field}
@@ -144,7 +146,7 @@ export const FormBlock: React.FC<
                             errors={errors}
                             register={register}
                           />
-                        </div>
+                        </Fragment>
                       )
                     }
                     return null
