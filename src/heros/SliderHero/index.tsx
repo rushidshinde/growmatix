@@ -36,7 +36,7 @@ export const SliderHero: React.FC<NonNullable<Page['hero']['heroFieldsSlider']>>
         <Swiper
           slidesPerView={1}
           spaceBetween={0}
-          loop={true}
+          loop={!!(slide?.length && slide?.length > 1)}
           pagination={{
             clickable: true,
           }}
@@ -52,7 +52,7 @@ export const SliderHero: React.FC<NonNullable<Page['hero']['heroFieldsSlider']>>
             <SwiperSlide key={i}>
               <div className={`relative w-full min-h-[700px] h-screen md:min-h-screen bg-accent py-20 flex flex-col justify-center ${slide.alignment === 'center' ? 'items-center' : slide.alignment === 'right' ? 'items-end' : 'items-start'}`}>
                 <div className="absolute inset-0 w-full h-full">
-                  <Media fill imgClassName="object-cover" priority resource={slide.media} />
+                  <Media fill imgClassName="object-cover" priority resource={slide.media} pictureClassName="absolute inset-0 w-full h-full"/>
                 </div>
                 <div className="container relative z-10">
                   <div className={`w-full flex flex-col ${slide.alignment === 'center' ? 'items-center' : slide.alignment === 'right' ? 'items-end' : 'items-start'}`}>
