@@ -96,6 +96,7 @@ export const link: LinkType = ({ appearances, sizes, disableLabel = false, overr
           {
             name: 'newTab',
             type: 'checkbox',
+            defaultValue: false,
             admin: {
               style: {
                 alignSelf: 'flex-end',
