@@ -100,9 +100,11 @@ export interface Config {
   };
   globals: {
     'global-settings': GlobalSetting;
+    'header-nav': HeaderNav;
   };
   globalsSelect: {
     'global-settings': GlobalSettingsSelect<false> | GlobalSettingsSelect<true>;
+    'header-nav': HeaderNavSelect<false> | HeaderNavSelect<true>;
   };
   locale: null;
   user: User & {
@@ -1783,6 +1785,173 @@ export interface GlobalSetting {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "header-nav".
+ */
+export interface HeaderNav {
+  id: number;
+  brand: {
+    /**
+     * Select a brand logo for light background
+     */
+    logo: number | Media;
+    /**
+     * Select a brand logo for dark background
+     */
+    logoLight: number | Media;
+  };
+  nav?: {
+    level0Links?:
+      | {
+          link: {
+            type?: ('reference' | 'custom') | null;
+            newTab?: boolean | null;
+            reference?:
+              | ({
+                  relationTo: 'pages';
+                  value: number | Page;
+                } | null)
+              | ({
+                  relationTo: 'blog';
+                  value: number | Blog;
+                } | null);
+            url?: string | null;
+            label: string;
+          };
+          /**
+           * Enable level 1 links
+           */
+          enableL1: boolean;
+          level1Links?:
+            | {
+                link: {
+                  type?: ('reference' | 'custom') | null;
+                  newTab?: boolean | null;
+                  reference?:
+                    | ({
+                        relationTo: 'pages';
+                        value: number | Page;
+                      } | null)
+                    | ({
+                        relationTo: 'blog';
+                        value: number | Blog;
+                      } | null);
+                  url?: string | null;
+                  label: string;
+                };
+                /**
+                 * Enable level 2 links
+                 */
+                enableL2: boolean;
+                level2Links?:
+                  | {
+                      link: {
+                        type?: ('reference' | 'custom') | null;
+                        newTab?: boolean | null;
+                        reference?:
+                          | ({
+                              relationTo: 'pages';
+                              value: number | Page;
+                            } | null)
+                          | ({
+                              relationTo: 'blog';
+                              value: number | Blog;
+                            } | null);
+                        url?: string | null;
+                        label: string;
+                      };
+                      /**
+                       * Enable level 3 links
+                       */
+                      enableL3: boolean;
+                      level3Links?:
+                        | {
+                            link: {
+                              type?: ('reference' | 'custom') | null;
+                              newTab?: boolean | null;
+                              reference?:
+                                | ({
+                                    relationTo: 'pages';
+                                    value: number | Page;
+                                  } | null)
+                                | ({
+                                    relationTo: 'blog';
+                                    value: number | Blog;
+                                  } | null);
+                              url?: string | null;
+                              label: string;
+                            };
+                            /**
+                             * Enable level 4 links
+                             */
+                            enableL4: boolean;
+                            level4Links?:
+                              | {
+                                  link: {
+                                    type?: ('reference' | 'custom') | null;
+                                    newTab?: boolean | null;
+                                    reference?:
+                                      | ({
+                                          relationTo: 'pages';
+                                          value: number | Page;
+                                        } | null)
+                                      | ({
+                                          relationTo: 'blog';
+                                          value: number | Blog;
+                                        } | null);
+                                    url?: string | null;
+                                    label: string;
+                                  };
+                                  id?: string | null;
+                                }[]
+                              | null;
+                            id?: string | null;
+                          }[]
+                        | null;
+                      id?: string | null;
+                    }[]
+                  | null;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  buttons?: {
+    buttons?:
+      | {
+          link: {
+            type?: ('reference' | 'custom') | null;
+            newTab?: boolean | null;
+            reference?:
+              | ({
+                  relationTo: 'pages';
+                  value: number | Page;
+                } | null)
+              | ({
+                  relationTo: 'blog';
+                  value: number | Blog;
+                } | null);
+            url?: string | null;
+            label: string;
+            /**
+             * Choose how the link should be rendered.
+             */
+            appearance?: ('default' | 'outline') | null;
+            /**
+             * Choose size of the link.
+             */
+            size?: ('default' | 'lg') | null;
+          };
+          id?: string | null;
+        }[]
+      | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "global-settings_select".
  */
 export interface GlobalSettingsSelect<T extends boolean = true> {
@@ -1865,6 +2034,119 @@ export interface GlobalSettingsSelect<T extends boolean = true> {
   theme?: T;
   language?: T;
   canonical?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "header-nav_select".
+ */
+export interface HeaderNavSelect<T extends boolean = true> {
+  brand?:
+    | T
+    | {
+        logo?: T;
+        logoLight?: T;
+      };
+  nav?:
+    | T
+    | {
+        level0Links?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              enableL1?: T;
+              level1Links?:
+                | T
+                | {
+                    link?:
+                      | T
+                      | {
+                          type?: T;
+                          newTab?: T;
+                          reference?: T;
+                          url?: T;
+                          label?: T;
+                        };
+                    enableL2?: T;
+                    level2Links?:
+                      | T
+                      | {
+                          link?:
+                            | T
+                            | {
+                                type?: T;
+                                newTab?: T;
+                                reference?: T;
+                                url?: T;
+                                label?: T;
+                              };
+                          enableL3?: T;
+                          level3Links?:
+                            | T
+                            | {
+                                link?:
+                                  | T
+                                  | {
+                                      type?: T;
+                                      newTab?: T;
+                                      reference?: T;
+                                      url?: T;
+                                      label?: T;
+                                    };
+                                enableL4?: T;
+                                level4Links?:
+                                  | T
+                                  | {
+                                      link?:
+                                        | T
+                                        | {
+                                            type?: T;
+                                            newTab?: T;
+                                            reference?: T;
+                                            url?: T;
+                                            label?: T;
+                                          };
+                                      id?: T;
+                                    };
+                                id?: T;
+                              };
+                          id?: T;
+                        };
+                    id?: T;
+                  };
+              id?: T;
+            };
+      };
+  buttons?:
+    | T
+    | {
+        buttons?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                    appearance?: T;
+                    size?: T;
+                  };
+              id?: T;
+            };
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
