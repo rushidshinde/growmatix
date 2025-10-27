@@ -11,7 +11,7 @@ import type {CMSLinkType} from '@/components/Link'
 export default function RenderedNav({nav} : {nav: HeaderNav['nav']}) {
   return (
     <Fragment>
-      <nav className="flex items-center justify-start gap-x-3">
+      <nav className="flex items-center justify-start gap-x-3 md:flex-col md:items-stretch md:w-full">
         {
           nav?.level0Links && nav?.level0Links.map((l0Link, id)=>(
             <Fragment key={id}>
@@ -95,15 +95,15 @@ export default function RenderedNav({nav} : {nav: HeaderNav['nav']}) {
 
 function NavMenuLink({ className, link }: { className?: string; link: CMSLinkType }) {
   return (
-    <div className={cn(className, 'px-5 py-2 hover:text-primary outline-none focus-visible:text-primary')}>
-      <CMSLink className={'outline-none text-primary-foreground hover:text-primary focus-visible:text-primary'} {...link}/>
+    <div className={cn(className, 'flex items-center justify-between group gap-3 px-2 py-2 text-primary-foreground md:text-background hover:text-primary focus-visible:text-primary md:px-0')}>
+      <CMSLink className={'text-inherit md:text-inherit hover:text-inherit focus-visible:text-inherit outline-none'} {...link}/>
     </div>
   )
 }
 function NavMenuTrigger({ className, link }: { className?: string; link: CMSLinkType }) {
   return (
     <Fragment>
-      <CMSLink className={cn(className, 'text-primary-foreground hover:text-primary outline-none focus-visible:text-primary')}  {...link}/>
+      <CMSLink className={cn(className, 'text-inherit md:text-inherit hover:text-inherit focus-visible:text-inherit outline-none')}  {...link}/>
     </Fragment>
   )
 }

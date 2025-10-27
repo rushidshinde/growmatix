@@ -5,7 +5,7 @@ import { CMSLink } from '@/components/Link'
 export default function RenderedButtons({buttons} : {buttons: HeaderNav['buttons']}) {
   return (
     <Fragment>
-      <div className="flex items-center justify-start gap-x-3">
+      <div className="flex items-center justify-start gap-x-3 md:dark md:w-full md:flex-col md:items-stretch md:gap-y-3">
         {
           buttons?.buttons && buttons?.buttons.map((button, id)=>(
             <Fragment key={id}>
