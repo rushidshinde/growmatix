@@ -17,6 +17,11 @@ const nextConfig = {
           protocol: url.protocol.replace(':', ''),
         }
       }),
+      {
+        protocol: 'http',
+        hostname: '192.168.31.91',
+        port: '3000',
+      },
     ],
     qualities: [50, 70, 90, 100],
   },
