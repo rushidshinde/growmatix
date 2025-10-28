@@ -476,6 +476,52 @@ export const GlobalSettings: GlobalConfig = {
             }
           ],
         },
+        {
+          name: 'social',
+          label: 'Social Links',
+          fields: [
+            {
+              name: 'facebook',
+              type: 'text',
+              label: 'Facebook link',
+              admin: {
+                placeholder: 'https://www.facebook.com/xxxx/',
+              },
+            },
+            {
+              name: 'instagram',
+              type: 'text',
+              label: 'Instagram link',
+              admin: {
+                placeholder: 'https://www.instagram.com/xxxx/',
+              },
+            },
+            {
+              name: 'x',
+              type: 'text',
+              label: 'X link',
+              admin: {
+                placeholder: 'https://x.com/xxxx',
+              },
+            },
+            {
+              name: 'linkedin',
+              type: 'text',
+              label: 'LinkedIn link',
+              admin: {
+                placeholder: 'https://www.linkedin.com/company/xxxx',
+              },
+            },
+            {
+              name: 'youtube',
+              type: 'text',
+              label: 'Youtube link',
+              admin: {
+                placeholder: 'https://www.youtube.com/xxxx',
+              },
+            },
+          ],
+        },
       ],
     },
     {
