@@ -220,6 +220,23 @@ export const Pages: CollectionConfig<'pages'> = {
                 }],
               },
             },
+            {
+              name: 'navigation',
+              label: 'Navigation Settings',
+              type: 'group',
+              fields: [
+                {
+                  name: 'disableHeader',
+                  type: 'checkbox',
+                  required: true,
+                  defaultValue: false,
+                  label: 'Disable Header',
+                  admin: {
+                    description: 'Check this to disable the Header Navigation Menu on page',
+                  },
+                }
+              ],
+            },
           ],
         },
       ],

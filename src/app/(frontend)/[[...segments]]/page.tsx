@@ -52,6 +52,7 @@ export default async function Page({ params }: PageProps) {
 
   const { hero, layout } = page
   const schemas = page?.advanced?.schemas ?? []
+  const disableHeader = page?.advanced?.navigation?.disableHeader ?? false
 
   return (
     <>
@@ -59,7 +60,7 @@ export default async function Page({ params }: PageProps) {
         <JsonLd key={index} schema={schema.schema} name={schema.name} />
       ))}
       <div className="relative">
-        <HeaderNavComponent/>
+        {!disableHeader && <HeaderNavComponent />}
         <main className="">
           {/* Allows redirects for valid pages too */}
           <PayloadRedirects disableNotFound url={fullPath} />

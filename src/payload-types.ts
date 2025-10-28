@@ -298,6 +298,12 @@ export interface Page {
       follow: boolean;
     };
     canonical?: string | null;
+    navigation: {
+      /**
+       * Check this to disable the Header Navigation Menu on page
+       */
+      disableHeader: boolean;
+    };
   };
   publishedAt?: string | null;
   /**
@@ -1145,6 +1151,11 @@ export interface PagesSelect<T extends boolean = true> {
               follow?: T;
             };
         canonical?: T;
+        navigation?:
+          | T
+          | {
+              disableHeader?: T;
+            };
       };
   publishedAt?: T;
   segments?:
