@@ -1774,6 +1774,13 @@ export interface GlobalSetting {
       xmlData: string;
     };
   };
+  social?: {
+    facebook?: string | null;
+    instagram?: string | null;
+    x?: string | null;
+    linkedin?: string | null;
+    youtube?: string | null;
+  };
   /**
    * Select theme for project. Default is System
    */
@@ -2030,6 +2037,15 @@ export interface GlobalSettingsSelect<T extends boolean = true> {
           | {
               xmlData?: T;
             };
+      };
+  social?:
+    | T
+    | {
+        facebook?: T;
+        instagram?: T;
+        x?: T;
+        linkedin?: T;
+        youtube?: T;
       };
   theme?: T;
   language?: T;
