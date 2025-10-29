@@ -10,7 +10,7 @@ import { RenderBlocks } from '@/blocks/RenderBlocks'
 import type { Metadata } from 'next'
 import { generateMeta } from '@/utilities/generateMeta'
 import JsonLd from '@/utilities/jsonLd'
-import HeaderNavComponent from '@/navigation/header/headerNavComponent'
+import HeaderNavServerComponent from '@/navigation/header/headerNavServerComponent'
 
 interface PageProps {
   params: Promise<{
@@ -60,7 +60,7 @@ export default async function Page({ params }: PageProps) {
         <JsonLd key={index} schema={schema.schema} name={schema.name} />
       ))}
       <div className="relative">
-        {!disableHeader && <HeaderNavComponent />}
+        {!disableHeader && <HeaderNavServerComponent />}
         <main className="">
           {/* Allows redirects for valid pages too */}
           <PayloadRedirects disableNotFound url={fullPath} />

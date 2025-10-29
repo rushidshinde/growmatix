@@ -36,7 +36,7 @@ export const HeaderNav: GlobalConfig = {
                 },
               },
               admin: {
-                description: 'Select a brand logo for light background',
+                description: 'Select a brand logo for light background (recommended AVIF or WebP)',
                 allowCreate: false,
               },
             },
@@ -59,7 +59,7 @@ export const HeaderNav: GlobalConfig = {
                 },
               },
               admin: {
-                description: 'Select a brand logo for dark background',
+                description: 'Select a brand logo for dark background (recommended AVIF or WebP)',
                 allowCreate: false,
               },
             },

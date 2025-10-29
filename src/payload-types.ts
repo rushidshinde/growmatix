@@ -1809,11 +1809,11 @@ export interface HeaderNav {
   id: number;
   brand: {
     /**
-     * Select a brand logo for light background
+     * Select a brand logo for light background (recommended AVIF or WebP)
      */
     logo: number | Media;
     /**
-     * Select a brand logo for dark background
+     * Select a brand logo for dark background (recommended AVIF or WebP)
      */
     logoLight: number | Media;
   };
